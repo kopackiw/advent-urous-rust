@@ -1,7 +1,5 @@
 use std::{collections::HashSet, iter::once};
 
-use itertools::Itertools;
-
 enum Move {
     North,
     East,
