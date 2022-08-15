@@ -68,15 +68,13 @@ fn set_values(
     board: &mut Board,
     command: &Command,
     command_mapping_strategy: fn(&CommandType) -> fn(usize) -> usize,
-) -> Board {
+) {
     (command.from.0..=command.to.0).for_each(|line| {
         (command.from.1..=command.to.1).for_each(|column| {
             board[line][column] =
                 command_mapping_strategy(&command.command_type)(board[line][column])
         });
     });
-
-    board.to_vec()
 }
 
 fn solve(command_mapping_strategy: fn(&CommandType) -> fn(usize) -> usize, s: &str) -> usize {
@@ -84,7 +82,9 @@ fn solve(command_mapping_strategy: fn(&CommandType) -> fn(usize) -> usize, s: &s
     s.lines()
         .flat_map(parse)
         .fold(init, |mut acc, command| {
-            set_values(&mut acc, &command, command_mapping_strategy)
+            set_values(&mut acc, &command, command_mapping_strategy);
+
+            acc
         })
         .into_iter()
         .map(|line| line.into_iter().sum::<usize>())
